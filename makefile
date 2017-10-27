@@ -11,8 +11,11 @@ bin/%.o: examples/%.asm bin/.f
 bin/%.text: bin/%.o
 	.eabi/bin/arm-none-eabi-objcopy --dump-section .text=$@ $<
 
-dump:
-	
+bin/%.dis.asm: bin/%.o
+	.eabi/bin/arm-none-eabi-objdump -d $< > $@
+
+dump: bin/aes.text
+	./index.js --from 0x760 --to 0xf20 $<
 
 clean:
 	rm -rf bin
